@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from flask import request
 from flask import render_template
@@ -10,8 +12,11 @@ sample = Flask(__name__)
 
 data = []
 
-client = MongoClient("mongodb://mongo:27017/")
-mydb = client["router_database"]
+mongo_uri  = os.environ.get("MONGO_URI")
+db_name    = os.environ.get("DB_NAME")
+
+client = MongoClient(mongo_uri)
+mydb = client[db_name]
 mycol = mydb["router_collection"]
 
 @sample.route("/")
