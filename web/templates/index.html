@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Sample app</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+
+  <style>
+    .form-inline {
+      display: flex;
+      align-items: center;
+      gap: 10px; /* space between items */
+    }
+    .form-inline label {
+      margin-right: 4px;
+    }
+  </style>
+
+  <body>
+    <h1>You are calling me from {{request.remote_addr}}</h1>
+    <form method="POST" action="/add" class="form-inline">
+      <label for="ip">IP:</label>
+      <input id="ip" name="ip" placeholder="IP address" required />
+
+      <label for="username">Username:</label>
+      <input id="username" name="username" placeholder="Username" required />
+
+      <label for="password">Password:</label>
+      <input id="password" name="password" placeholder="Password" required />
+
+      <button type="submit">Add Routers</button>
+    </form>
+
+    <ul>
+      {% for route in data %}
+      <li>
+        {{ route.ip }} - {{ route.username }}
+        <form
+          method="POST"
+          action="{{ url_for('delete_router') }}"
+          style="display: inline"
+        >
+          <input type="hidden" name="id" value="{{ route._id }}" />
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
