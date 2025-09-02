@@ -6,7 +6,7 @@ from database import get_router_info
 
 def scheduler():
 
-    INTERVAL = 600
+    INTERVAL = 10
     next_run = time.monotonic()
     count = 0
 
