@@ -8,44 +8,44 @@ on:
 
 jobs:
   ci:
-    run-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-  steps:
-  - name: Check out code
-    uses: actions/checkout@v4
-  
-  - name: Set up Python 3.12.3
-    uses: actions/setup-python@v5
-    with:
-      python-version: 3.12.3
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
 
-  - name: Install Lint & Format Tools
-    run: |
-      pip install flake8 black
-  
-  - name: Run flake8 (Lint)
-    run: flake8 .
-  
-  - name: Check code format with black
-    run: black --check .
+    - name: Set up Python 3.12.3
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12.3
 
-  - name: Check Docker Versions
-    run: |
-      docker --version
-      docker compose version
+    - name: Install Lint & Format Tools
+      run: |
+        pip install flake8 black
 
-  - name: Login to Docker Hub
-    uses: docker/login-action@v3
-    with:
-      username: ${{ secrets.DOCKERHUB_USERNAME }}
-      password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - name: Run flake8 (Lint)
+      run: flake8 .
 
-  - name: Build & Push Docker Images
-    run: |
-      docker build -t cruzsri/worker:latest ./worker
-      docker build -t cruzsri/scheduler:latest ./scheduler
-      docker build -t cruzsri/web:latest ./web
+    - name: Check code format with black
+      run: black --check .
 
-      docker push cruzsri/worker:latest
-      docker push cruzsri/scheduler:latest
-      docker push cruzsri/web:latest
+    - name: Check Docker Versions
+      run: |
+        docker --version
+        docker compose version
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build & Push Docker Images
+      run: |
+        docker build -t chotipatp/worker:latest ./worker
+        docker build -t chotipatp/scheduler:latest ./scheduler
+        docker build -t chotipatp/web:latest ./web
+
+        docker push chotipatp/worker:latest
+        docker push chotipatp/scheduler:latest
+        docker push chotipatp/web:latest
