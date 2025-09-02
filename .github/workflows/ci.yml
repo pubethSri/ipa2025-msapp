@@ -42,10 +42,10 @@ jobs:
 
     - name: Build & Push Docker Images
       run: |
-        docker build -t cruzsri/worker:latest ./worker
-        docker build -t cruzsri/scheduler:latest ./scheduler
-        docker build -t cruzsri/web:latest ./web
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/worker:latest ./worker
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/scheduler:latest ./scheduler
+        docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/web:latest ./web
 
-        docker push cruzsri/worker:latest
-        docker push cruzsri/scheduler:latest
-        docker push cruzsri/web:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/worker:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/scheduler:latest
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/web:latest
