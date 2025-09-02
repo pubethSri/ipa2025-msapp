@@ -33,7 +33,7 @@
     <ul>
       {% for route in data %}
       <li>
-        {{ route.ip }} - {{ route.username }}
+        <a href="/router/{{ route.ip }}" style="margin-left:8px;">{{ route.ip }}</a> - {{ route.username }}
         <form
           method="POST"
           action="{{ url_for('delete_router') }}"

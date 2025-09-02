@@ -18,6 +18,7 @@ db_name    = os.environ.get("DB_NAME")
 client = MongoClient(mongo_uri)
 mydb = client[db_name]
 mycol = mydb["router_collection"]
+interface_stat = mydb["interface_status"]
 
 @sample.route("/")
 def main():
@@ -47,6 +48,20 @@ def delete_router():
         except Exception as e:
             print("Delete failed:", e)
     return redirect(url_for("main"))
+
+@sample.route("/router/<ip>", methods=["GET"])
+def router_detail(ip):
+    docs = (
+        mydb.interface_status.find({"router_ip": ip})
+        .sort("timestamp", -1)
+        .limit(3)
+    )
+
+    return render_template(
+        "router_detail.html",
+        router_ip=ip,
+        interface_data=docs,
+    )
 
 if __name__ == "__main__":
     sample.run(host="0.0.0.0", port=8080)
