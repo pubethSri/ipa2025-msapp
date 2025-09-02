@@ -55,7 +55,7 @@ def delete_router():
 
 @sample.route("/router/<ip>", methods=["GET"])
 def router_detail(ip):
-    docs = mydb.interface_status.find({"router_ip": ip}).sort("timestamp", -1).limit(3)
+    docs = mydb.interface_status.find({"router_ip": ip}).sort("timestamp", -1).limit(5)
 
     return render_template(
         "router_detail.html",
