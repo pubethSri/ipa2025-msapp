@@ -1,6 +1,8 @@
 from bson import json_util
 from router_client import get_interfaces
 from database import save_interface_status
+
+
 def callback(ch, method, props, body):
     job = json_util.loads(body.decode())
     router_ip = job["ip"]

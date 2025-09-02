@@ -12,13 +12,14 @@ sample = Flask(__name__)
 
 data = []
 
-mongo_uri  = os.environ.get("MONGO_URI")
-db_name    = os.environ.get("DB_NAME")
+mongo_uri = os.environ.get("MONGO_URI")
+db_name = os.environ.get("DB_NAME")
 
 client = MongoClient(mongo_uri)
 mydb = client[db_name]
 mycol = mydb["router_collection"]
 interface_stat = mydb["interface_status"]
+
 
 @sample.route("/")
 def main():
@@ -26,6 +27,7 @@ def main():
     for r in routers:
         r["_id"] = str(r["_id"])
     return render_template("index.html", data=routers)
+
 
 @sample.route("/add", methods=["POST"])
 def add_router():
@@ -39,6 +41,7 @@ def add_router():
         mycol.insert_one(router_to_add)
     return redirect(url_for("main"))
 
+
 @sample.route("/delete", methods=["POST"])
 def delete_router():
     doc_id = request.form.get("id")
@@ -49,19 +52,17 @@ def delete_router():
             print("Delete failed:", e)
     return redirect(url_for("main"))
 
+
 @sample.route("/router/<ip>", methods=["GET"])
 def router_detail(ip):
-    docs = (
-        mydb.interface_status.find({"router_ip": ip})
-        .sort("timestamp", -1)
-        .limit(3)
-    )
+    docs = mydb.interface_status.find({"router_ip": ip}).sort("timestamp", -1).limit(3)
 
     return render_template(
         "router_detail.html",
         router_ip=ip,
         interface_data=docs,
     )
+
 
 if __name__ == "__main__":
     sample.run(host="0.0.0.0", port=8080)
